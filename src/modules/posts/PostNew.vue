@@ -2,10 +2,10 @@
   <div class ="container" id="container">
     <div class="card">
         <div class="card-header">
-            Nuevo post
+            <b>Nuevo post</b>
         </div>
         <div class="card-body">
-            <form v-on:submit.prevent="createPost">
+            <form>
                 <div class="form-group">
                   <label for="tittle">Título:</label>
                   <input type="text" required   name="tittle" id="tittle" v-model="post.tittle" class="form-control">
@@ -51,7 +51,7 @@
                 </div>
                 <br/>
                 <div>
-                    <button @click="newPost" name="save" id="btnSave" class="btn btn-success" role="button">Guardar</button>
+                    <button @click="newPost" name="save" id="btnSave" class="btn btn-success" role="button">Crear post</button>
                     <button name="cancel" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</button>
                 </div>
             </form>
