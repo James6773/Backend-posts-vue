@@ -53,6 +53,8 @@
             const data = await response.json();
 
             console.log(data);
+
+            this.$router.replace({path: '/categories'});  
         }
     }
   }
@@ -67,7 +69,6 @@
       margin-right: 0px; 
   }
   #container {
-      margin-top: 35px;
-      margin-bottom: 20px;
+    margin: 2em auto;
   }
   </style>

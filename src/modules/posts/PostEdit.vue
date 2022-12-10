@@ -1,6 +1,6 @@
 <template>
     <div class ="container" id="container">
-      <div class="card">
+      <div class="card" id="card">
           <div class="card-header">
               <b>Editar post</b>
           </div>
@@ -51,7 +51,7 @@
                   </div>
                   <br/>
                   <div>
-                      <button @click="newPost" name="save" id="btnSave" class="btn btn-success" role="button">Guardar cambios</button>
+                      <button @click="updatePost" name="save" id="btnSave" class="btn btn-success" role="button">Guardar cambios</button>
                       <router-link :to="'/'" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</router-link>
                   </div>
               </form>
@@ -62,54 +62,69 @@
   
   <script>
   export default {
-      async created() {
-          const options = {
-              method: "GET"
-          }
-  
-          const categoryResponse = await fetch("http://localhost:8000/api/category/list", options);
-          const userResponse = await fetch("http://localhost:8000/api/user/list", options);
-  
-          const categoryData = await categoryResponse.json();
-          const userData = await userResponse.json();
-  
-          console.log(categoryData);
-          console.log(userData);
-  
-          this.categories = categoryData.data;
-          this.users = userData.data;
-      },
-      
-      data() {
-          return {
-              categories:[],
-              users:[],
-              post: {
-                  tittle: "",
-                  content: "",
-                  category: "",
-                  user: "",
-                  state: "",
-                  description: ""
-              }
-          }
-      },
-      methods: {
-         async updatePost(e) {
-            e.preventDefault();
-
+    props:['id'],
+        async created() {
             const options = {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(this.post)
+                method: "GET"
             }
 
-            const response = await fetch("http://localhost:8000/api/post/update", options);
+            const response = await fetch("http://localhost:8000/api/post/listById/"+this.id , options);
             const data = await response.json();
 
+            const categoryResponse = await fetch("http://localhost:8000/api/category/list", options);
+            const userResponse = await fetch("http://localhost:8000/api/user/list", options);
+
+            const categoryData = await categoryResponse.json();
+            const userData = await userResponse.json();
+
             console.log(data);
-          }
-      }
+            console.log(categoryData);
+            console.log(userData);
+
+            this.categories = categoryData.data;
+            this.users = userData.data;
+
+            let editPostData = {
+                tittle: data.data.tittle,
+                content: data.data.content,
+                category: data.data.category,
+                user: data.data.user,
+                state: data.data.state,
+                description: data.data.description
+            }
+            this.post = editPostData;
+        },
+        data(){
+            return{
+                categories:[],
+                users:[],
+                post: {
+                    tittle: "",
+                    content: "",
+                    category: "",
+                    user: "",
+                    description: ""
+                }
+            }
+        },
+        methods:{
+            async updatePost(e){
+                e.preventDefault();
+
+                const options = {
+                    method: "PUT",
+                    headers: {'Content-Type': 'application/json'},
+                    body:  JSON.stringify(this.post)
+                }
+        
+                const response = await fetch("http://localhost:8000/api/post/update/"+this.id , options);
+                const data = await response.json();
+                
+                console.log(data);
+
+                this.$router.replace({path: '/'});
+            }
+        }
   }
   </script>
   
@@ -121,8 +136,8 @@
   #btnCancel {
       margin-right: 0px; 
   }
-  #container {
-      margin-top: 35px;
-      margin-bottom: 20px;
+  #card {
+    margin: 2em auto;
+     
   }
   </style>

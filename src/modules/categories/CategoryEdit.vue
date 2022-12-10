@@ -1,6 +1,6 @@
 <template>
     <div class ="container" id="container">
-      <div class="card">
+      <div class="card" id="card">
           <div class="card-header">
              <b>Editar categoría</b> 
           </div>
@@ -27,33 +27,48 @@
   </template>
   
   <script>
-  export default {
-      
-      data() {
-          return {
-
-              category: {
-                  name: "",
-                  description: ""
-              }
-          }
-      },
-      methods: {
-         async updateCategory(e) {
-            e.preventDefault();
-
+  export default { 
+    props:['id'],
+        async created(){
             const options = {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(this.post)
+                method: "GET"
             }
-
-            const response = await fetch("http://localhost:8000/api/category/update", options);
+            const response = await fetch("http://localhost:8000/api/category/listById/"+this.id , options);
             const data = await response.json();
 
             console.log(data);
-          }
-      }
+
+            let editCategoryData = {
+                name: data.data.name,
+                description: data.data.description,
+            }
+            this.category = editCategoryData;
+        },
+        data(){
+            return{
+                category: {
+                    name: "",
+                    description: ""
+                }
+            }
+        },
+        methods:{
+            async updateCategory(e){
+                e.preventDefault();
+
+                const options = {
+                method: "PUT",
+                headers: {'Content-Type': 'application/json'},
+                body:  JSON.stringify(this.category)
+            }
+                const response = await fetch("http://localhost:8000/api/category/update/"+this.id , options);
+                const data = await response.json();
+                
+                console.log(data);
+
+                this.$router.replace({path: '/categories'});
+            }
+        }
   }
   </script>
   
@@ -65,8 +80,7 @@
   #btnCancel {
       margin-right: 0px; 
   }
-  #container {
-      margin-top: 35px;
-      margin-bottom: 20px;
+  #card {
+    margin: 2em auto;
   }
   </style>

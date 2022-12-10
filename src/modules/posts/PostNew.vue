@@ -109,7 +109,7 @@ export default {
 
             console.log(data);
 
-            
+            this.$router.replace({path: '/'});  
         }
     }
 }
@@ -124,7 +124,6 @@ export default {
     margin-right: 0px; 
 }
 #container {
-    margin-top: 35px;
-    margin-bottom: 20px;
+    margin: 2em auto;
 }
 </style>
