@@ -2,7 +2,7 @@
     <div class="container" id="container">
         <div class="card">
             <div class="card-header">
-                <center><a name="" id="" class="btn btn-success" href="#" role="button">Crea una nueva categoría</a></center>
+                <center><router-link :to="'/categories/create'" name="create" id="create" class="btn btn-success" href="#" role="button">Crea una nueva categoría</router-link></center>
             </div>          
             <div class="card-body">
                 <table class="table table-striped table-inverse table-responsive">
@@ -30,8 +30,8 @@
                                 <td></td>
                                 <td>{{category.description}}</td>
                                 <td>
-                                 <button name="delete" id="btnDelete" class="btn btn-danger" href="#" role="button">Eliminar</button>
-                                 <button name="more" id="btnMore" class="btn btn-info" href="#" role="button">Ver más...</button>
+                                 <button @click="deleteCategory(category.id)" name="delete" id="btnDelete" class="btn btn-danger" href="javascript:void(0)" role="button">Eliminar</button>
+                                 <router-link :to="'/categories/edit/'+category.id" name="more" id="btnMore" class="btn btn-info" href="#" role="button">Ver más...</router-link>
                                 </td>
                             </tr>
                         </tbody>

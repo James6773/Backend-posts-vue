@@ -2,7 +2,7 @@
     <div class="container" id="container">
         <div class="card">
             <div class="card-header">
-                <center><a name="" id="" class="btn btn-success" href="#" role="button">Crea un nuevo post</a></center>
+                <center><router-link :to="'/posts/create'" name="create" id="btnCreate" class="btn btn-success" href="#" role="button">Crea un nuevo post</router-link></center>
             </div>          
             <div class="card-body">
                 <table class="table table-striped table-inverse table-responsive">
@@ -11,6 +11,8 @@
                             <th><center>Id</center></th>
                             <th><center>Título</center></th>
                             <th><center>Contenido</center></th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -26,10 +28,12 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>{{post.description}}</td>
                                 <td>
-                                 <button name="delete" id="btnDelete" class="btn btn-danger" href="#" role="button">Eliminar</button>
-                                 <button name="more" id="btnMore" class="btn btn-info" href="#" role="button">Ver más...</button>
+                                 <button @click="deletePost(post.id)" name="delete" id="btnDelete" class="btn btn-danger" href="javascript:void(0)" role="button">Eliminar</button>
+                                 <router-link :to="'/posts/edit/'+post.id" name="more" id="btnMore" class="btn btn-info" href="#" role="button">Ver más...</router-link>
                                 </td>
                             </tr>
                         </tbody>

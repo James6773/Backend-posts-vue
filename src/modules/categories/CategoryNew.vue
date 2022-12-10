@@ -8,7 +8,7 @@
               <form>
                   <div class="form-group">
                     <label for="tittle">Nombre:</label>
-                    <input type="text" required name="name" id="name" v-model="category.tittle" class="form-control">
+                    <input type="text" name="name" id="name" v-model="category.name" class="form-control">
                   </div>
                   <br/>
                   <div class="form-group">
@@ -18,7 +18,7 @@
                   <br/>
                   <div>
                       <button @click="newCategory" name="save" id="btnSave" class="btn btn-success" role="button">Crear categoría</button>
-                      <button name="cancel" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</button>
+                      <router-link :to="'/categories'" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</router-link>
                   </div>
               </form>
           </div>
@@ -32,28 +32,29 @@
       data() {
           return {
 
-              category: {
-                  name: "",
-                  description: ""
-              }
+            category: {
+                name:"",
+                description: "",
+            }
           }
       },
-      methods: {
-         async newCategory(e) {
-              e.preventDefault();
-  
-              const options = {
-                  method: "POST",
-                  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify(this.post)
-              }
-  
-              const response = await fetch("http://localhost:8000/api/category/store", options);
-              const data = await response.json();
-  
-              console.log(data);
-          }
-      }
+      methods:{
+        async newCategory(e) {
+            e.preventDefault();
+
+            const options = {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json'},
+                body:  JSON.stringify(this.song)
+            }
+
+            const response = await fetch("http://localhost/api/category/store", options);
+            const data = await response.json();
+
+            console.log(data);
+        }
+    }
   }
   </script>
   

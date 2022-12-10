@@ -16,8 +16,9 @@ const routes = [
         component: PostNew
     },
     {
-        path: '/posts/edit',
-        component: PostEdit
+        path: '/posts/edit/:id',
+        component: PostEdit,
+        props: true
     },
     {
         path: '/categories',
@@ -28,8 +29,9 @@ const routes = [
         component: CategoryNew
     },
     {
-        path: '/categories/edit',
-        component: CategoryEdit
+        path: '/categories/edit/:id',
+        component: CategoryEdit,
+        props: true
     },
 ];
 

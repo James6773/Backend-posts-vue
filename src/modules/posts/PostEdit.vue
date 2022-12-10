@@ -1,4 +1,4 @@
-<<template>
+<template>
     <div class ="container" id="container">
       <div class="card">
           <div class="card-header">
@@ -52,7 +52,7 @@
                   <br/>
                   <div>
                       <button @click="newPost" name="save" id="btnSave" class="btn btn-success" role="button">Guardar cambios</button>
-                      <button name="cancel" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</button>
+                      <router-link :to="'/'" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</router-link>
                   </div>
               </form>
           </div>
@@ -96,18 +96,18 @@
       },
       methods: {
          async updatePost(e) {
-              e.preventDefault();
-  
-              const options = {
-                  method: "POST",
-                  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify(this.post)
-              }
-  
-              const response = await fetch("http://localhost:8000/api/post/update", options);
-              const data = await response.json();
-  
-              console.log(data);
+            e.preventDefault();
+
+            const options = {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(this.post)
+            }
+
+            const response = await fetch("http://localhost:8000/api/post/update", options);
+            const data = await response.json();
+
+            console.log(data);
           }
       }
   }
@@ -125,5 +125,4 @@
       margin-top: 35px;
       margin-bottom: 20px;
   }
-  
   </style>

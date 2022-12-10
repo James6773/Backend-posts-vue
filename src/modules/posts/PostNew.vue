@@ -52,7 +52,7 @@
                 <br/>
                 <div>
                     <button @click="newPost" name="save" id="btnSave" class="btn btn-success" role="button">Crear post</button>
-                    <button name="cancel" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</button>
+                    <router-link :to="'/'" name="cancel" id="btnCancel" class="btn btn-secondary" role="button">Cancelar</router-link>
                 </div>
             </form>
         </div>
@@ -87,8 +87,8 @@ export default {
             post: {
                 tittle: "",
                 content: "",
-                category: "",
                 user: "",
+                category: "",
                 state: "",
                 description: ""
             }
@@ -108,6 +108,8 @@ export default {
             const data = await response.json();
 
             console.log(data);
+
+            
         }
     }
 }
@@ -125,5 +127,4 @@ export default {
     margin-top: 35px;
     margin-bottom: 20px;
 }
-
 </style>
