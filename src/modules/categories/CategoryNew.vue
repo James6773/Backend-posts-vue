@@ -24,22 +24,30 @@
           </div>
       </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  export default {
-      
-      data() {
-          return {
+<script>
+import Swal from 'sweetalert2';
 
-            category: {
-                name:"",
-                description: "",
-            }
+export default {  
+    data() {
+        return {
+
+          category: {
+              name:"",
+              description: "",
           }
-      },
-      methods:{
-        async newCategory(e) {
+        }
+    },
+    methods:{
+      async newCategory(e) {
+        try {
+            Swal.fire({
+                allowOutsideClick: false,
+                text: "Cargando..."
+            });
+            Swal.showLoading();
+
             e.preventDefault();
 
             const options = {
@@ -51,11 +59,35 @@
             const response = await fetch("http://localhost:8000/api/category/store", options);
             
             const data = await response.json();
-            console.log(data);
-       
 
+            console.log(data);
+
+            Swal.close();
+
+            const MySwal = (Swal);
+
+            await MySwal.fire({
+                title: "Hecho",
+                text: "¡Categoría creada con éxito!",
+                icon: 'success'
+            })
+      
             this.$router.replace({path: '/categories'});  
+
+        } catch (error) {
+            console.log(error);
+            console.log(error.response.data);
+            Swal.close();
+
+            let mensaje;
+            if (error && error.response && error.response.data) {
+                mensaje = error.response.data;
+            } else {
+                mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
+            }
+            Swal.fire('Error:', mensaje, 'error');
         }
+      }
     }
   }
   </script>

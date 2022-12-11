@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
     async created() {
         const options = {
@@ -95,21 +97,52 @@ export default {
         }
     },
     methods: {
-       async newPost(e) {
-            e.preventDefault();
+        async newPost(e) {
+            try { 
+                Swal.fire({
+                    allowOutsideClick: false,
+                    text: "Cargando..."
+                });
+                Swal.showLoading();
 
-            const options = {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(this.post)
+                e.preventDefault();
+
+                const options = {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(this.post)
+                }
+
+                const response = await fetch("http://localhost:8000/api/post/store", options);
+                const data = await response.json();
+
+                console.log(data);
+
+                Swal.close();
+
+                const MySwal = (Swal);
+
+                await MySwal.fire({
+                    title: "Hecho",
+                    text: "¡Post creado con éxito!",
+                    icon: 'success'
+                })
+
+                this.$router.replace({path: '/'});  
+
+            } catch (error) {
+                console.log(error);
+                console.log(error.response.data);
+                Swal.close();
+
+                let mensaje;
+                if (error && error.response && error.response.data) {
+                    mensaje = error.response.data;
+                } else {
+                    mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
+                }
+                Swal.fire('Error:', mensaje, 'error');
             }
-
-            const response = await fetch("http://localhost:8000/api/post/store", options);
-            const data = await response.json();
-
-            console.log(data);
-
-            this.$router.replace({path: '/'});  
         }
     }
 }

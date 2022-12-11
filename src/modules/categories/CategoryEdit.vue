@@ -24,12 +24,21 @@
           </div>
       </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  export default { 
-    props:['id'],
-        async created(){
+<script>
+import Swal from 'sweetalert2';
+
+export default { 
+props:['id'],
+    async created(){
+        try {
+            Swal.fire({
+                allowOutsideClick: false,
+                text: "Cargando..."
+            });
+            Swal.showLoading();
+            
             const options = {
                 method: "GET"
             }
@@ -43,36 +52,84 @@
                 description: data.data.description,
             }
             this.category = editCategoryData;
-        },
-        data(){
-            return{
-                category: {
-                    name: "",
-                    description: ""
-                }
+
+            Swal.close();
+
+        } catch (error) {
+            console.log(error);
+            console.log(error.response.data);
+            Swal.close();
+
+            let mensaje;
+            if (error && error.response && error.response.data) {
+                mensaje = error.response.data;
+            } else {
+                mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
             }
-        },
-        methods:{
-            async updateCategory(e){
+            Swal.fire('Error:', mensaje, 'error');
+        } 
+    },
+    data(){
+        return{
+            category: {
+                name: "",
+                description: ""
+            }
+        }
+    },
+    methods:{
+        async updateCategory(e){
+            try {
+                Swal.fire({
+                    allowOutsideClick: false,
+                    text: "Cargando..."
+                });
+                Swal.showLoading();
+
                 e.preventDefault();
 
                 const options = {
-                method: "PUT",
-                headers: {'Content-Type': 'application/json'},
-                body:  JSON.stringify(this.category)
-            }
+                    method: "PUT",
+                    headers: {'Content-Type': 'application/json'},
+                    body:  JSON.stringify(this.category)
+                }
+
                 const response = await fetch("http://localhost:8000/api/category/update/"+this.id , options);
                 const data = await response.json();
                 
                 console.log(data);
 
+                Swal.close();
+
+                const MySwal = (Swal);
+
+                await MySwal.fire({
+                    title: "Hecho",
+                    text: "¡Categoría actualizada con éxito!",
+                    icon: 'success',
+                })
+
                 this.$router.replace({path: '/categories'});
+
+            } catch (error) {
+                console.log(error);
+                console.log(error.response.data);
+                Swal.close();
+
+                let mensaje;
+                if (error && error.response && error.response.data) {
+                    mensaje = error.response.data;
+                } else {
+                    mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
+                }
+                Swal.fire('Error:', mensaje, 'error');
             }
         }
-  }
-  </script>
+    }
+}
+</script>
   
-  <style scoped>
+<style scoped>
   #btnSave {
       margin-left: 5px;
       margin-right: 25px; 
@@ -83,4 +140,4 @@
   #card {
     margin: 2em auto;
   }
-  </style>
+</style>

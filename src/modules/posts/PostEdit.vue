@@ -58,12 +58,21 @@
           </div>
       </div>
     </div>
-  </template>
+</template>
   
-  <script>
-  export default {
-    props:['id'],
-        async created() {
+<script>
+import Swal from 'sweetalert2';
+
+export default {
+props:['id'],
+    async created() {
+        try {
+            Swal.fire({
+                allowOutsideClick: false,
+                text: "Cargando..."
+            });
+            Swal.showLoading();
+
             const options = {
                 method: "GET"
             }
@@ -93,23 +102,46 @@
                 description: data.data.description
             }
             this.post = editPostData;
-        },
-        data(){
-            return{
-                categories:[],
-                users:[],
-                post: {
-                    tittle: "",
-                    content: "",
-                    user_id: "",
-                    category_id: "",
-                    state: "",
-                    description: ""
-                }
+
+            Swal.close();
+
+        } catch (error) {
+            console.log(error);
+            console.log(error.response.data);
+            Swal.close();
+
+            let mensaje;
+            if (error && error.response && error.response.data) {
+                mensaje = error.response.data;
+            } else {
+                mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
             }
-        },
-        methods:{
-            async updatePost(e){
+            Swal.fire('Error:', mensaje, 'error');
+        } 
+    },
+    data(){
+        return{
+            categories:[],
+            users:[],
+            post: {
+                tittle: "",
+                content: "",
+                user_id: "",
+                category_id: "",
+                state: "",
+                description: ""
+            }
+        }
+    },
+    methods:{
+        async updatePost(e){
+            try {
+                Swal.fire({
+                    allowOutsideClick: false,
+                    text: "Cargando..."
+                });
+                Swal.showLoading();
+
                 e.preventDefault();
 
                 const options = {
@@ -123,22 +155,47 @@
                 
                 console.log(data);
 
+                Swal.close();
+
+                const MySwal = (Swal);
+
+                await MySwal.fire({
+                    title: "Hecho",
+                    text: "¡Post actualizado con éxito!",
+                    icon: 'success',
+                })
+
                 this.$router.replace({path: '/'});
+
+            } catch (error) {
+                console.log(error);
+                console.log(error.response.data);
+                Swal.close();
+
+                let mensaje;
+                if (error && error.response && error.response.data) {
+                    mensaje = error.response.data;
+                } else {
+                    mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
+                }
+                Swal.fire('Error:', mensaje, 'error');
             }
         }
-  }
-  </script>
+    }
+}
+</script>
   
-  <style scoped>
-  #btnSave {
-      margin-left: 5px;
-      margin-right: 25px; 
-  }
-  #btnCancel {
-      margin-right: 0px; 
-  }
-  #card {
-    margin: 2em auto;
-     
-  }
-  </style>
+<style scoped>
+#btnSave {
+    margin-left: 5px;
+    margin-right: 25px; 
+}
+#btnCancel {
+    margin-right: 0px; 
+}
+#card {
+margin: 2em auto;
+    
+}
+</style>
+
