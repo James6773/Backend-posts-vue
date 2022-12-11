@@ -44,15 +44,15 @@
 
             const options = {
                 method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json'},
-                body:  JSON.stringify(this.song)
+                headers: {'Content-Type': 'application/json'},
+                body:  JSON.stringify(this.category)
             }
 
-            const response = await fetch("http://localhost/api/category/store", options);
+            const response = await fetch("http://localhost:8000/api/category/store", options);
+            
             const data = await response.json();
-
             console.log(data);
+       
 
             this.$router.replace({path: '/categories'});  
         }

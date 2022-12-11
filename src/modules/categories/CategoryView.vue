@@ -42,25 +42,109 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
     async created() {
-        const options = {
-            method: "GET"
+        try{
+            Swal.fire({
+                    allowOutsideClick: false,
+                    text: "Cargando..."
+                });
+            Swal.showLoading();
+
+            const options = {
+                method: "GET"
+            }
+
+            const response = await fetch("http://localhost:8000/api/category/list", options);
+            const data = await response.json();
+
+            console.log(data);
+
+            this.categories = data.data;
+
+            Swal.close();
+
+        } catch {
+            console.log(error);
+            Swal.close();
+
+            let mensaje;
+            if (error && error.response && error.response.data) {
+                mensaje = error.response.data;
+            } else {
+                mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
+            }
+            Swal.fire('Error:', mensaje, 'error');
         }
-
-        const response = await fetch("http://localhost:8000/api/category/list", options);
-        const data = await response.json();
-
-        console.log(data);
-
-        this.categories = data.data;
     },
     data(){
         return {
             categories:[]
         }
-    }
+    },
+    methods:{
+        async deleteCategory(id) { 
+            try {
+                Swal.fire({
+                    allowOutsideClick: false,
+                    text: "Cargando..."
+                });
+                Swal.showLoading();
+                Swal.close();
+                
+                Swal.fire({
+                    title: '¿De verdad quieres eliminar esta categoría?',
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Sí',
+                    denyButtonText: 'Cancelar',
+                    cancelButtonText: '',
+                    customClass: {
+                    actions: 'my-actions',
+                    cancelButton: 'order-3',
+                    confirmButton: 'order-1',
+                    denyButton: 'order-2',
+                    }
+                }).then( async (result) => {
+                    if (result.isConfirmed) {
+                        const options = {
+                            method: "DELETE",
+                            headers: {'Content-Type': 'application/json'},
+                        }
 
+                        const response = await fetch("http://localhost:8000/api/category/destroy/"+id, options);
+                        const data = await response.json();
+
+                        console.log(data);
+
+                        const MySwal = (Swal);
+
+                        await MySwal.fire('¡Categoría eliminada con éxito!', '', 'success'); 
+                        
+                        //this.categories = data.data.newList;
+
+                    } else if (result.isDenied) {
+                        Swal.fire('¡La categoría no se eliminó!', '', 'info')
+                    }
+                })
+    
+            } catch (error) {
+                console.log(error);
+                console.log(error.response.data);
+                Swal.close();
+
+                let mensaje;
+                if (error && error.response && error.response.data) {
+                    mensaje = error.response.data;
+                } else {
+                    mensaje = '¡Ocurrió un error!, por favor intentelo de nuevo...';
+                }
+                Swal.fire('Error:', mensaje, 'error');
+            }
+        }
+    }
 }
 </script>
 

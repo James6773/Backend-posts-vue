@@ -18,9 +18,9 @@
                   <br/>
                   <div class="form-group">
                       <label for="category">Categoría:</label>
-                      <select className="form-select" required  name="category" id="category"  v-model="post.category" class="form-control">
+                      <select className="form-select" required  name="category" id="category_id"  v-model="post.category_id" class="form-control">
                           <option value="">Seleccione...</option>
-                          <option v-for="category in categories" :key="category.id">
+                          <option v-for="category in categories" :value="category.id" :key="category.id">
                               <ul>{{category.name}}</ul>
                           </option>
                       </select>
@@ -28,9 +28,9 @@
                   <br/>
                   <div class="form-group">
                       <label for="user">Creado por:</label>
-                      <select className="form-select" required  name="user" id="user" v-model="post.user" class="form-control">
+                      <select className="form-select" required  name="user" id="user_id" v-model="post.user_id" class="form-control">
                           <option value="">Seleccione...</option>
-                          <option v-for="user in users" :key="user.id">
+                          <option v-for="user in users" :value="user.id" :key="user.id">
                               <ul>{{user.name}}</ul>
                           </option>
                       </select>
@@ -87,8 +87,8 @@
             let editPostData = {
                 tittle: data.data.tittle,
                 content: data.data.content,
-                category: data.data.category,
-                user: data.data.user,
+                user_id: data.data.user_id,
+                category_id: data.data.category_id,
                 state: data.data.state,
                 description: data.data.description
             }
@@ -101,8 +101,9 @@
                 post: {
                     tittle: "",
                     content: "",
-                    category: "",
-                    user: "",
+                    user_id: "",
+                    category_id: "",
+                    state: "",
                     description: ""
                 }
             }
