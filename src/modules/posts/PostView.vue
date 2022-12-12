@@ -126,7 +126,7 @@ export default {
 
                         await MySwal.fire('¡Post eliminado con éxito!', '', 'success'); 
                         
-                        //this.songs = data.data.newList;
+                        this.posts = data.data.newList;
 
                     } else if (result.isDenied) {
                         Swal.fire('¡El post no se eliminó!', '', 'info')
