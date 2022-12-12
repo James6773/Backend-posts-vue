@@ -123,7 +123,7 @@ export default {
 
                         await MySwal.fire('¡Categoría eliminada con éxito!', '', 'success'); 
                         
-                        //this.categories = data.data.newList;
+                        this.categories = data.data.newList;
 
                     } else if (result.isDenied) {
                         Swal.fire('¡La categoría no se eliminó!', '', 'info')
